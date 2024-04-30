@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transaction-producer
+  namespace: finance
+  labels:
+    app: transaction-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transaction-producer
+  template:
+    metadata:
+      labels:
+        app: transaction-producer
+    spec:
+      containers:
+        - name: transaction-producer
+          image: rccys/ada-projeto-orquestracao:v1
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "150m"
+          imagePullPolicy: Always
+          args: 
+            - transaction-producer.py 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transaction-producer
+  namespace: finance
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: transaction-producer
+  type: ClusterIP

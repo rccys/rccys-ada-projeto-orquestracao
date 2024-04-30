@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fraud-detector-consumer
+  namespace: finance
+  labels:
+    app: fraud-detector-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fraud-detector-consumer
+  template:
+    metadata:
+      labels:
+        app: fraud-detector-consumer
+    spec:
+      containers:
+        - name: fraud-detector-consumer
+          image: rccys/ada-projeto-orquestracao:v1
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "150m"
+          imagePullPolicy: Always
+          args: 
+            - fraud-detector-consumer.py
+      restartPolicy: Always    
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fraud-detector-consumer
+  namespace: finance
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: fraud-detector-consumer
+  type: ClusterIP
