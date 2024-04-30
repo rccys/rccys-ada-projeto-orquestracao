@@ -54,3 +54,8 @@ minikube stop
 minikube delete --all
 
 ```
+
+### Obs.:
+Queria implementar o download do relatório de fraudes pelo browser.
+
+Queria implementar o HPA nas minhas aplicações, mas não consegui deixar o projeto 100% funcional devido ao mencionado anteriormente e como conversado na apresentação achei melhor entregar algo funcional que trazer mais uma complexidade e comprometer a entrega do projeto.
